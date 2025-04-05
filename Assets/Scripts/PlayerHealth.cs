@@ -40,4 +40,18 @@ public class PlayerHealth : MonoBehaviour
             gameOver = true;
         }
     }
+
+    public void GiveLife(float healthGiven)
+    {
+        if (health + healthGiven <= 100)
+        {
+            health += healthGiven;
+            healthSlider.value = health;
+        }
+        else if (!gameOver)
+        {
+            health = 100;
+            healthSlider.value = 100;
+        }
+    }
 }
