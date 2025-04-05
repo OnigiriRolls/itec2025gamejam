@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerScores : MonoBehaviour
 {
     public static PlayerScores Instance;
+    public static bool IntroShown { get; set; }
     private List<float> counters = new();
 
     void Awake()
@@ -18,6 +19,16 @@ public class PlayerScores : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public void SetIntroShown(bool value)
+    {
+        IntroShown = value;
+    }
+
+    public bool GetIntroShown()
+    {
+        return IntroShown;
     }
 
     public void AddCounter(float counter)
