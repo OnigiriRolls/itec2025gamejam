@@ -5,12 +5,18 @@ public class PlayerHealth : MonoBehaviour
 {
     public float health = 100;
     public float timeDamage = 0.1f;
-    public Slider healthSlider;
     public CounterManager counterManager;
+    public Slider healthSlider;
+    private bool gameOver = false;
 
     void Start()
     {
+        Debug.Log("start");
+        Debug.Log(health);
+        Debug.Log(healthSlider.value);
         health = 100;
+        healthSlider.value = health;
+        gameOver = false;
     }
 
     void Update()
@@ -23,12 +29,15 @@ public class PlayerHealth : MonoBehaviour
         if (health - damage >= 0)
         {
             health -= damage;
-            healthSlider.value -= damage;
+            Debug.Log("Scade" + health);
+            healthSlider.value = health;
         }
-        else 
+        else if(!gameOver)
         {
-            counterManager.SaveTime();
-            Debug.Log("game over");
+            Debug.Log("save time + " + health);
+            if(counterManager != null)
+                counterManager.SaveTime();
+            gameOver = true;
         }
     }
 }
