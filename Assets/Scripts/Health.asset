@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Health
   m_EditorClassIdentifier: 
   itemName: Health
-  icon: {fileID: 0}
-  prefab: {fileID: 0}
-  projectilePrefab: {fileID: 0}
-  damage: 7
+  icon: {fileID: 21300000, guid: c070d195b07f2ee4288cce3391458c1c, type: 3}
+  prefab: {fileID: 8784535603738034532, guid: e5c1443d2315194448b2e377f622f871, type: 3}
+  projectilePrefab: {fileID: 8784535603738034532, guid: 10f354eef4fea2a479eb5ce1f9eb1ac8, type: 3}
+  damage: 10
   description: 
