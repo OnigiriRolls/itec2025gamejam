@@ -3,6 +3,8 @@ using UnityEngine;
 public class DeactivateGameObject : MonoBehaviour
 {
     public GameObject player;
+    public GameObject introCamera;
+    public GameObject counterManager;
 
     void Start()
     {
@@ -10,6 +12,9 @@ public class DeactivateGameObject : MonoBehaviour
         {
             gameObject.SetActive(false);
             player.SetActive(true);
+            counterManager.SetActive(true);
+            if (introCamera != null)
+                introCamera.SetActive(false);
         }
     }
 
@@ -18,5 +23,6 @@ public class DeactivateGameObject : MonoBehaviour
         gameObject.SetActive(false);
         PlayerScores.Instance.SetIntroShown(true);
         player.SetActive(true);
+        counterManager.SetActive(true);
     }
 }
