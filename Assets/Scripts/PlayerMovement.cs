@@ -2,52 +2,133 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float moveSpeed = 5f;
-    public float turnSpeed = 720f;
+    public float mouseSensitivity = 2f;
+    private float verticalRotation = 0f;
+    private Transform cameraTransform;
 
+    // Ground Movement
     private Rigidbody rb;
-    private Vector3 move;
-    private Quaternion toRotation;
+    public float MoveSpeed = 5f;
+    private float moveHorizontal;
+    private float moveForward;
+
+    // Jumping
+    public float jumpForce = 10f;
+    public float fallMultiplier = 2.5f;
+    public float ascendMultiplier = 2f;
+    private bool isGrounded = true;
+    public LayerMask groundLayer;
+    private float groundCheckTimer = 0f;
+    private float groundCheckDelay = 0.3f;
+    private float playerHeight;
+    private float raycastDistance;
+
+    // Animator
     private Animator animator;
-    private bool isRunning = false;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        rb.freezeRotation = true;
+        cameraTransform = Camera.main.transform;
+
         animator = GetComponent<Animator>();
-        isRunning = false;
+
+        playerHeight = GetComponent<CapsuleCollider>().height * transform.localScale.y;
+        raycastDistance = (playerHeight / 2) + 0.2f;
+
+        // Make cursor visible
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     void Update()
     {
-        var h = Input.GetAxis("Horizontal");
-        var v = Input.GetAxis("Vertical");
+        moveHorizontal = Input.GetAxisRaw("Horizontal");
+        moveForward = Input.GetAxisRaw("Vertical");
 
-        var moveDir = new Vector3(h, 0, v).normalized;
-        if (moveDir.magnitude >= 0.1f)
+        RotateCamera();
+
+        //if (Input.GetButtonDown("Jump") && isGrounded)
+        //{
+        //    Jump();
+        //}
+
+        // Ground check
+        if (!isGrounded && groundCheckTimer <= 0f)
         {
-            if (!isRunning)
-            {
-                animator.SetBool("run", true);
-                isRunning = true;
-            }
-            
-            move = moveSpeed * Time.deltaTime * moveDir;
-            toRotation = Quaternion.LookRotation(moveDir, Vector3.up);
+            Vector3 rayOrigin = transform.position + Vector3.up * 0.1f;
+            isGrounded = Physics.Raycast(rayOrigin, Vector3.down, raycastDistance, groundLayer);
         }
         else
         {
-            isRunning = false;
-            animator.SetBool("run", false);
-            move = Vector3.zero;
+            groundCheckTimer -= Time.deltaTime;
+        }
+
+        // Set IsRunning animation
+        bool isMoving = moveHorizontal != 0 || moveForward != 0;
+        animator.SetBool("IsRunning", isMoving);
+        if(isMoving && Cursor.lockState == CursorLockMode.None)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        else if(!isMoving && Cursor.lockState == CursorLockMode.Locked)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
     }
 
     void FixedUpdate()
-    {      
-        rb.MovePosition(rb.position + move);
-        //rb.linearVelocity = move;
-        toRotation = Quaternion.Normalize(toRotation);
-        rb.rotation = Quaternion.RotateTowards(rb.rotation, toRotation, turnSpeed * Time.fixedDeltaTime);
+    {
+        MovePlayer();
+        ApplyJumpPhysics();
+    }
+
+    void MovePlayer()
+    {
+        Vector3 movement = (transform.right * moveHorizontal + transform.forward * moveForward).normalized;
+        Vector3 targetlinearVelocity = movement * MoveSpeed;
+
+        Vector3 linearVelocity = rb.linearVelocity;
+        linearVelocity.x = targetlinearVelocity.x;
+        linearVelocity.z = targetlinearVelocity.z;
+        rb.linearVelocity = linearVelocity;
+
+        if (isGrounded && moveHorizontal == 0 && moveForward == 0)
+        {
+            rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
+        }
+    }
+
+    void RotateCamera()
+    {
+        float horizontalRotation = Input.GetAxis("Mouse X") * mouseSensitivity;
+        transform.Rotate(0, horizontalRotation, 0);
+
+        verticalRotation -= Input.GetAxis("Mouse Y") * mouseSensitivity;
+        verticalRotation = Mathf.Clamp(verticalRotation, -90f, 90f);
+
+        cameraTransform.localRotation = Quaternion.Euler(verticalRotation, 0, 0);
+    }
+
+    //void Jump()
+    //{
+    //    isGrounded = false;
+    //    groundCheckTimer = groundCheckDelay;
+    //    rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpForce, rb.linearVelocity.z);
+    //}
+
+    void ApplyJumpPhysics()
+    {
+        if (rb.linearVelocity.y < 0)
+        {
+            rb.linearVelocity += Vector3.up * Physics.gravity.y * fallMultiplier * Time.fixedDeltaTime;
+        }
+        else if (rb.linearVelocity.y > 0)
+        {
+            rb.linearVelocity += Vector3.up * Physics.gravity.y * ascendMultiplier * Time.fixedDeltaTime;
+        }
     }
 }
