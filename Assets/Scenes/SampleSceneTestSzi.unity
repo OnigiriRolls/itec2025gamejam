@@ -1479,6 +1479,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &635983410 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 0f0b8529a7115c542a2d72ea15a4ead2, type: 3}
+  m_PrefabInstance: {fileID: 1244478816}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &639359397
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2299,6 +2304,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 0
+  animator: {fileID: 0}
 --- !u!136 &891504173
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2357,6 +2363,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destination: {fileID: 345656379}
+  agent: {fileID: 0}
+  animator: {fileID: 0}
+  attackDistance: 2
+  attackRate: 1
+  damage: 10
 --- !u!1001 &981604046
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2589,6 +2600,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destination: {fileID: 345656379}
+  agent: {fileID: 0}
+  animator: {fileID: 0}
+  attackDistance: 2
+  attackRate: 1
+  damage: 10
 --- !u!195 &1170277659
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2624,6 +2640,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 0
+  animator: {fileID: 0}
 --- !u!1001 &1202255544
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2826,6 +2843,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destination: {fileID: 345656379}
+  agent: {fileID: 1244478821}
+  animator: {fileID: 635983410}
+  attackDistance: 2
+  attackRate: 1
+  damage: 10
 --- !u!195 &1244478821
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2883,7 +2905,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13b6402606fdc474ba27c8ada4bb601d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 0
+  health: 40
+  animator: {fileID: 635983410}
 --- !u!114 &1269041847 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8529622248944725826, guid: 5dd417881beffa24f98e1e58ad950633, type: 3}
@@ -2999,7 +3022,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13b6402606fdc474ba27c8ada4bb601d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 0
+  health: 40
+  animator: {fileID: 1955735735}
 --- !u!195 &1304907452
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3035,6 +3059,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destination: {fileID: 345656379}
+  agent: {fileID: 1304907452}
+  animator: {fileID: 1955735735}
+  attackDistance: 2
+  attackRate: 1
+  damage: 10
 --- !u!1001 &1354437565
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4174,6 +4203,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 0
+  animator: {fileID: 0}
 --- !u!136 &1789250024
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -4232,6 +4262,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destination: {fileID: 345656379}
+  agent: {fileID: 0}
+  animator: {fileID: 0}
+  attackDistance: 2
+  attackRate: 1
+  damage: 10
 --- !u!1 &1792582558
 GameObject:
   m_ObjectHideFlags: 0
@@ -4474,6 +4509,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1304907452}
   m_SourcePrefab: {fileID: 100100000, guid: b6cada7e16428dd44bbaab02c67e1262, type: 3}
+--- !u!95 &1955735735 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: b6cada7e16428dd44bbaab02c67e1262, type: 3}
+  m_PrefabInstance: {fileID: 1955735734}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1955873898
 GameObject:
   m_ObjectHideFlags: 0

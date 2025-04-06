@@ -6,10 +6,10 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField]
     private Animator animator;
     private bool die = false;
-    // void Start()
-    // {
-    //     health = 100;
-    // }
+    void Start()
+    {
+        health = 40;
+    }
 
     // public void LoseLife(float damage)
     // {
