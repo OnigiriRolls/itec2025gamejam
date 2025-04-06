@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -22,6 +23,8 @@ public class PlayerMovement : MonoBehaviour
     private float groundCheckDelay = 0.3f;
     private float playerHeight;
     private float raycastDistance;
+
+    public CounterManager counterManager;
 
     // Animator
     private Animator animator;
@@ -86,20 +89,49 @@ public class PlayerMovement : MonoBehaviour
         ApplyJumpPhysics();
     }
 
+    public float upwardForce = 10f;
+    public bool rightTime = false;
+
+    public void SetRightTime(bool value)
+    {
+        rightTime = value;
+    }
+
+    private bool once = false;
     void MovePlayer()
     {
-        Vector3 movement = (transform.right * moveHorizontal + transform.forward * moveForward).normalized;
-        Vector3 targetlinearVelocity = movement * MoveSpeed;
-
-        Vector3 linearVelocity = rb.linearVelocity;
-        linearVelocity.x = targetlinearVelocity.x;
-        linearVelocity.z = targetlinearVelocity.z;
-        rb.linearVelocity = linearVelocity;
-
-        if (isGrounded && moveHorizontal == 0 && moveForward == 0)
+        if (!gameObject.CompareTag("Dead"))
         {
-            rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
+            Vector3 movement = (transform.right * moveHorizontal + transform.forward * moveForward).normalized;
+            Vector3 targetlinearVelocity = movement * MoveSpeed;
+
+            Vector3 linearVelocity = rb.linearVelocity;
+            linearVelocity.x = targetlinearVelocity.x;
+            linearVelocity.z = targetlinearVelocity.z;
+            rb.linearVelocity = linearVelocity;
+
+            if (isGrounded && moveHorizontal == 0 && moveForward == 0)
+            {
+                rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0);
+            }
         }
+        else if(rightTime)
+        {
+            rb.linearVelocity = new Vector3 (0, upwardForce, 0);
+            if (!once)
+            {
+                once = true;
+                StartCoroutine(StartEnd());
+            }
+        }
+    }
+
+    IEnumerator StartEnd()
+    {
+        yield return new WaitForSeconds(3);
+        rightTime = false;
+        animator.SetTrigger("StartEnd");
+        counterManager.SaveTime();
     }
 
     void RotateCamera()

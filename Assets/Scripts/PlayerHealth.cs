@@ -7,6 +7,7 @@ public class PlayerHealth : MonoBehaviour
     public float timeDamage = 0.1f;
     public CounterManager counterManager;
     public Slider healthSlider;
+    public Animator anim;
     private bool gameOver = false;
 
     void Start()
@@ -16,6 +17,7 @@ public class PlayerHealth : MonoBehaviour
         Debug.Log(healthSlider.value);
         health = 100;
         healthSlider.value = health;
+        anim = GetComponent<Animator>();   
         gameOver = false;
     }
 
@@ -35,8 +37,11 @@ public class PlayerHealth : MonoBehaviour
         else if(!gameOver)
         {
             Debug.Log("save time + " + health);
-            if(counterManager != null)
-                counterManager.SaveTime();
+            //if(counterManager != null)
+            //    counterManager.SaveTime();
+            gameObject.tag = "Dead";
+            counterManager.SetStop();
+            anim.SetTrigger("Die");
             gameOver = true;
         }
     }

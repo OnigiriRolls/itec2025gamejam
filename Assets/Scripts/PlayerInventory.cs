@@ -7,6 +7,12 @@ public class PlayerInventory : MonoBehaviour
     public Image itemImage;
     public Transform shootPoint;
     public Camera mainCamera;
+    public Animator anim;
+
+    void Start()
+    {
+        anim = GetComponent<Animator>();
+    }
 
     public void Collect(CollectibleItem item)
     {
@@ -35,13 +41,16 @@ public class PlayerInventory : MonoBehaviour
             {
                 Debug.Log("if 2");
                 var ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out RaycastHit hit))
+                if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, ~LayerMask.GetMask("Player")))
                 {
                     Debug.Log("if 3");
                     Vector3 direction = (hit.point - shootPoint.position).normalized;
-
-                    var proj = Instantiate(collectedItem.projectilePrefab, shootPoint.position, Quaternion.LookRotation(direction));
-                    proj.GetComponent<Projectile>()?.Initialize(collectedItem.damage);
+                    if (!gameObject.CompareTag("Dead"))
+                    {
+                        anim.SetTrigger("Attack");
+                        var proj = Instantiate(collectedItem.projectilePrefab, shootPoint.position, Quaternion.LookRotation(direction));
+                        proj.GetComponent<Projectile>()?.Initialize(collectedItem.damage);
+                    }
                 }
             }
         }

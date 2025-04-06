@@ -7,6 +7,7 @@ public class CounterManager : MonoBehaviour
     public TextMeshProUGUI scoresText;
     public GameObject panel;
     private float currentTime;
+    private bool stop = false;
 
     void Start()
     {
@@ -15,8 +16,16 @@ public class CounterManager : MonoBehaviour
 
     void Update()
     {
-        currentTime += Time.deltaTime;
-        counterText.text = $"Time: {currentTime:F2}s";
+        if (!stop)
+        {
+            currentTime += Time.deltaTime;
+            counterText.text = $"Time: {currentTime:F2}s";
+        }
+    }
+
+    public void SetStop()
+    {
+        stop = true;
     }
 
     public void SaveTime() 
@@ -24,7 +33,7 @@ public class CounterManager : MonoBehaviour
         PlayerScores.Instance.AddCounter(currentTime);
         DisplayScores();
         if(panel != null)
-        panel.SetActive(true);
+            panel.SetActive(true);
     }
 
     private void DisplayScores()

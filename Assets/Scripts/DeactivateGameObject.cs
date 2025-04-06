@@ -24,5 +24,6 @@ public class DeactivateGameObject : MonoBehaviour
         PlayerScores.Instance.SetIntroShown(true);
         player.SetActive(true);
         counterManager.SetActive(true);
+        introCamera.SetActive(false);
     }
 }
